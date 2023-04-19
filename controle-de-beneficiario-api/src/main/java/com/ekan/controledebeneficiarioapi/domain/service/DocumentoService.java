@@ -2,7 +2,7 @@ package com.ekan.controledebeneficiarioapi.domain.service;
 
 import com.ekan.controledebeneficiarioapi.domain.exceptions.PreenchimentoIncorretoException;
 import com.ekan.controledebeneficiarioapi.domain.model.Documento;
-import com.ekan.controledebeneficiarioapi.domain.model.DocumentoDTO;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.DocumentoDTO;
 import com.ekan.controledebeneficiarioapi.domain.repository.DocumentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
