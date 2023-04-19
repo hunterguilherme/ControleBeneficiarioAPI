@@ -1,5 +1,6 @@
-package com.ekan.controledebeneficiarioapi.domain.model;
+package com.ekan.controledebeneficiarioapi.domain.model.dto;
 
+import com.ekan.controledebeneficiarioapi.domain.model.Documento;
 import com.ekan.controledebeneficiarioapi.enums.TipoDocumento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

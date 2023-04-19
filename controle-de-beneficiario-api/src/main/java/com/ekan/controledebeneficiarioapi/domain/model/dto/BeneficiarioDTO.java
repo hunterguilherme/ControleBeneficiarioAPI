@@ -1,5 +1,6 @@
-package com.ekan.controledebeneficiarioapi.domain.model;
+package com.ekan.controledebeneficiarioapi.domain.model.dto;
 
+import com.ekan.controledebeneficiarioapi.domain.model.Documento;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

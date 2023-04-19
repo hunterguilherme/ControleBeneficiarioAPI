@@ -1,23 +1,16 @@
 package com.ekan.controledebeneficiarioapi.controller;
 
-import com.ekan.controledebeneficiarioapi.domain.exceptions.PreenchimentoIncorretoException;
 import com.ekan.controledebeneficiarioapi.domain.model.Beneficiario;
-import com.ekan.controledebeneficiarioapi.domain.model.BeneficiarioDTO;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
 import com.ekan.controledebeneficiarioapi.domain.service.BeneficiarioService;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.DateTimeException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/beneficiarios")
@@ -58,19 +51,13 @@ public class BeneficiarioController {
     }
 
 
-    @ApiOperation(value = "Remove Beneficiarios", nickname = "removeBeneficiario", notes = "Remove beneficiario e seus documentos", response = Beneficiario.class)
+    @ApiOperation(value = "Remove Beneficiarios", nickname = "removeBeneficiario", notes = "Remove beneficiario e seus documentos")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Beneficiario com id = x removido com sucesso."),
             @ApiResponse(code = 404, message = "Beneficiario não encontrado")})
     @RequestMapping(value = "{id}",produces = { "application/json" }, method = RequestMethod.DELETE)
     public ResponseEntity<?> removeBeneficiario(@PathVariable Long id) {
-
-        return ResponseEntity.ok(beneficiarioService.excluir(id)) ;
+            return ResponseEntity.ok(beneficiarioService.excluir(id)) ;
     }
 
-//    @GetMapping(value = "/v1/folhas-de-ponto/{mes}",produces = { "application/json" })
-//    public ResponseEntity<?> geraRelatorioMensal(@PathVariable String mes) {
-//        return ResponseEntity.ok(relatorioMensalService.getRelatorio(mes));
-//
-//    }
 }
