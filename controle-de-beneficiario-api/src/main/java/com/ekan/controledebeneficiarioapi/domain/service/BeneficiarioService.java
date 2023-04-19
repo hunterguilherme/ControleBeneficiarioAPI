@@ -19,7 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BeneficiarioService {
@@ -82,10 +84,15 @@ public class BeneficiarioService {
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public Map<String, String> excluir(Long id) {
         try {
             documentoService.excluiDocumento(id);
             beneficiarioRepository.deleteById(id);
+
+            String message = String.format("beneficiario de id = %s deletado com sucesso.", id.toString());
+            Map<String, String> messagemMap = new HashMap<>();
+            messagemMap.put("message", message);
+            return messagemMap;
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(NOT_FOUND);
         }
@@ -95,18 +102,9 @@ public class BeneficiarioService {
 
     private void validacaoDatas(BeneficiarioDTO beneficiarioDTO) {
         try {
-            List<Documento> documentos= beneficiarioDTO.getDocumentos();
             LocalDate.parse(beneficiarioDTO.getDataAtualizacao());
             LocalDate.parse(beneficiarioDTO.getDataInclusao());
             LocalDate.parse(beneficiarioDTO.getDataNascimento());
-            if (documentos!=null){
-                documentos.forEach(documento -> {
-                    LocalDate.parse(documento.getDataAtualizacao().toString());
-                    LocalDate.parse(documento.getDataInclusao().toString());
-                });
-            }
-
-
         } catch (DateTimeException e) {
             throw new PreenchimentoIncorretoException("Data de beneficiario fora do padrao: (yyyy-MM-dd) ");
         }
