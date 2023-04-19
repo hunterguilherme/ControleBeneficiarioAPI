@@ -2,6 +2,7 @@ package com.ekan.controledebeneficiarioapi.domain.model;
 
 import com.ekan.controledebeneficiarioapi.enums.TipoDocumento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.OnDelete;
@@ -23,16 +24,20 @@ public class Documento {
     private Long id;
 
     @Column(name = "tipo_documento")
+    @ApiModelProperty(notes = "Tipo de documento", example = "RG", required = true)
     private TipoDocumento tipoDocumento;
 
+    @ApiModelProperty(notes = "Product ID", example = "Documento de identificação", required = true)
     private String descricao;
 
     @Column(name = "data_inclusao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(notes = "Data de inclusao", example = "2000-11-27", required = true)
     private LocalDate dataInclusao;
 
     @Column(name = "data_atualizacao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(notes = "Data de Atualizacao", example = "2015-09-04", required = true)
     private LocalDate dataAtualizacao;
 
     @JsonIgnore
