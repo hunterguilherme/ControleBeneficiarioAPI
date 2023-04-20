@@ -1,6 +1,7 @@
 package com.ekan.controledebeneficiarioapi.controller;
 
 import com.ekan.controledebeneficiarioapi.domain.model.Beneficiario;
+import com.ekan.controledebeneficiarioapi.domain.model.Documento;
 import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
 import com.ekan.controledebeneficiarioapi.domain.service.BeneficiarioService;
 import com.ekan.controledebeneficiarioapi.filter.Authorize;
@@ -24,7 +25,7 @@ public class BeneficiarioController {
     @ApiOperation(value = "insere Beneficiario", nickname = "insereBeneficiario", notes = "insere beneficiario com seus documentos", response = BeneficiarioDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Beneficiario Inserido com documentos", response = BeneficiarioDTO.class),
-            @ApiResponse(code = 400, message = "Beneficiario fora do padrao: (yyyy-MM-dd) ou Documento fora do padrao: (yyyy-MM-dd)")})
+            @ApiResponse(code = 400, message = "Beneficiario fora do padrao: (yyyy-MM-dd)/ Documento fora do padrao: (yyyy-MM-dd)/ tipo Documento invalido")})
     @RequestMapping(produces = { "application/json" }, method = RequestMethod.POST)
     public ResponseEntity<?> insereBeneficiario(@RequestBody @Valid BeneficiarioDTO beneficiarioDTO) {
 
@@ -36,7 +37,7 @@ public class BeneficiarioController {
     @ApiOperation(value = "busca Beneficiarios", nickname = "getBeneficiario", notes = "busca apenas a lista de beneficiario", response = Beneficiario.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de Beneficiarios", response = Beneficiario.class),
-            @ApiResponse(code = 404, message = "Beneficiario não encontrado")})
+            @ApiResponse(code = 404, message = "Beneficiarios não encontrados")})
     @RequestMapping(produces = { "application/json" }, method = RequestMethod.GET)
     public ResponseEntity<?> getBeneficiarios() {
         return ResponseEntity.ok(beneficiarioService.getBeneficiario());
@@ -45,6 +46,7 @@ public class BeneficiarioController {
     @ApiOperation(value = "atualiza beneficiario", nickname = "atualizaBeneficiario", notes = "atualiza unicamente beneficiario", response = Beneficiario.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "beneficiario atualizado", response = Beneficiario.class),
+            @ApiResponse(code = 400, message = "Data Fora do padrao: (yyyy-MM-dd)"),
             @ApiResponse(code = 404, message = "Beneficiario não encontrado")})
     @RequestMapping(value = "{id}",produces = { "application/json" }, method = RequestMethod.PUT)
     public ResponseEntity<?> atualizaBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioDTO beneficiarioDTO) {
