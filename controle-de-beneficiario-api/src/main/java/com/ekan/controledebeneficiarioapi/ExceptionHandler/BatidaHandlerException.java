@@ -37,7 +37,7 @@ public class BatidaHandlerException extends ResponseEntityExceptionHandler {
                 headers, status, request, ex, ex.getMessage(), ex.getLocalizedMessage(), ex.getCause());
         return ResponseEntity
                 .status(BAD_REQUEST)
-                .body("Data Documento Fora do padrao (yyyy-MM-dd)");
+                .body("Data Documento Fora do padrao: (yyyy-MM-dd) ou tipo de documento invalido.");
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)

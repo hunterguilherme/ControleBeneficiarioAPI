@@ -46,4 +46,5 @@ public class Documento {
     @JoinColumn(name = "beneficiario_id", nullable = false)
     private Beneficiario beneficiario;
 
+
 }

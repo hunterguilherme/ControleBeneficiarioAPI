@@ -63,9 +63,14 @@ public class BeneficiarioService {
     }
 
     public Beneficiario atualizaBenficiario(Long id, BeneficiarioDTO beneficiario) {
-        Beneficiario beneficiarioAtual = buscarOuFalhar(id);
         validacaoDatas(beneficiario);
+        Beneficiario beneficiarioAtual = buscarOuFalhar(id);
+
         BeanUtils.copyProperties(beneficiario, beneficiarioAtual, "id", "documentos");
+        beneficiarioAtual.setDataAtualizacao(stringToDate(beneficiario.getDataAtualizacao()));
+        beneficiarioAtual.setDataNascimento(stringToDate(beneficiario.getDataNascimento()));
+        beneficiarioAtual.setDataInclusao(stringToDate(beneficiario.getDataInclusao()));
+
         return beneficiarioRepository.save(beneficiarioAtual);
     }
 
