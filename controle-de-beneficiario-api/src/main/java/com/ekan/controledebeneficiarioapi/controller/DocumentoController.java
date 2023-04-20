@@ -20,12 +20,12 @@ public class DocumentoController {
 
     @Autowired
     private DocumentoService documentoService;
-    @ApiOperation(value = "Remove Documento", nickname = "removeDocumento", notes = "Remove documento")
+    @ApiOperation(value = "Remove Documento", nickname = "removeDocumento", notes = "Remove apenas documento")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "documento com id = x removido com sucesso."),
             @ApiResponse(code = 404, message = "documento não encontrado")})
     @RequestMapping(value = "{id}",produces = { "application/json" }, method = RequestMethod.DELETE)
-    public ResponseEntity<?> removeBeneficiario(@PathVariable Long id) {
+    public ResponseEntity<?> removeDocumento(@PathVariable Long id) {
         return ResponseEntity.ok(documentoService.excluir(id)) ;
     }
 
@@ -40,7 +40,7 @@ public class DocumentoController {
             @ApiResponse(code = 400, message = "Data Documento Fora do padrao: (yyyy-MM-dd) ou tipo de documento invalido."),
             @ApiResponse(code = 404, message = "Documento não encontrado")})
     @RequestMapping(value = "{id}",produces = { "application/json" }, method = RequestMethod.PUT)
-    public ResponseEntity<?> atualizadocumento(@PathVariable Long id, @RequestBody Documento documento) {
+    public ResponseEntity<?> atualizaDocumento(@PathVariable Long id, @RequestBody Documento documento) {
         return ResponseEntity.ok(documentoService.atualizaDocumento(id, documento));
     }
 }

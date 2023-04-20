@@ -63,11 +63,11 @@ public class DocumentoService {
 
     public Documento atualizaDocumento(Long id, Documento documento) {
        try{
+
         Documento documentoAtual = documentoRepository.findByBeneficiarioAndDocumentType(id, documento.getTipoDocumento());
-
         BeanUtils.copyProperties(documento, documentoAtual, "id", "beneficiario");
-
         return documentoRepository.save(documentoAtual);
+
        }catch (IllegalArgumentException e){
            throw  new EntidadeNaoEncontradaException("Beneficiario não encontrado");
        }
