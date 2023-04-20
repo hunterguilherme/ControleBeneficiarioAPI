@@ -3,6 +3,7 @@ package com.ekan.controledebeneficiarioapi.controller;
 import com.ekan.controledebeneficiarioapi.domain.model.Beneficiario;
 import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
 import com.ekan.controledebeneficiarioapi.domain.service.BeneficiarioService;
+import com.ekan.controledebeneficiarioapi.filter.Authorize;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -11,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+@Authorize
 @RestController
 @RequestMapping(value = "/beneficiarios")
 public class BeneficiarioController {
