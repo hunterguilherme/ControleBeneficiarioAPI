@@ -34,8 +34,8 @@ public class DocumentoService {
         documentoRepository.save(documento);
     }
 
-    public void excluiDocumento(Long id) {
-        documentoRepository.deleteAllByIdBeneficiario(id);
+    public int excluiDocumento(Long id) {
+        return documentoRepository.deleteAllByIdBeneficiario(id);
     }
 
     public DocumentoDTO getDocumentos(Long id) {

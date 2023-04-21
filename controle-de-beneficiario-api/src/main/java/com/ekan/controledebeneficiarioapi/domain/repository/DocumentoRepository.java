@@ -14,7 +14,7 @@ import java.util.List;
 public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     @Modifying
     @Query(value = "DELETE FROM DOCUMENTO d WHERE d.beneficiario_id = :id", nativeQuery = true)
-    void deleteAllByIdBeneficiario(@Param("id") Long id);
+    int deleteAllByIdBeneficiario(@Param("id") Long id);
 
 
     @Query(value = "SELECT * FROM documento AS d WHERE d.beneficiario_id = :id", nativeQuery = true)

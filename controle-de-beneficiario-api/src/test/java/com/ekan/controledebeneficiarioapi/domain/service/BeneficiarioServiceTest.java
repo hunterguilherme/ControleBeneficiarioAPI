@@ -2,7 +2,10 @@ package com.ekan.controledebeneficiarioapi.domain.service;
 
 import com.ekan.controledebeneficiarioapi.domain.model.Beneficiario;
 import com.ekan.controledebeneficiarioapi.domain.model.Documento;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.DocumentoDTO;
 import com.ekan.controledebeneficiarioapi.domain.repository.BeneficiarioRepository;
+import com.ekan.controledebeneficiarioapi.domain.repository.DocumentoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ekan.controledebeneficiarioapi.enums.TipoDocumento.RG;
@@ -39,9 +44,13 @@ public class BeneficiarioServiceTest {
     private ObjectMapper objectMapper;
     @Autowired
     private BeneficiarioRepository beneficiarioRepository;
-
+    @Autowired
+    private DocumentoRepository documentoRepository;
     @Autowired
     private DocumentoService documentoService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @InjectMocks
     private BeneficiarioService beneficiarioService;
@@ -52,6 +61,24 @@ public class BeneficiarioServiceTest {
         beneficiarioRepository.save(createBeneficiario());
     }
 
+    private BeneficiarioDTO createBeneficiarioDocumento() {
+        BeneficiarioDTO beneficiario = new BeneficiarioDTO();
+        Documento documento = new Documento();
+        documento.setDescricao("funciona");
+        documento.setTipoDocumento(RG);
+        documento.setDataInclusao(LocalDate.now().minusDays(1));
+        documento.setDataAtualizacao(LocalDate.now());
+        beneficiario.setNome("João Silva");
+        beneficiario.setTelefone("11 99999-9999");
+        beneficiario.setDataNascimento("1994-12-12");
+        beneficiario.setDataInclusao("1994-12-12");
+        beneficiario.setDataAtualizacao("1994-12-12");
+        beneficiario.setDocumentos(Arrays.asList(documento));
+//        BeneficiarioDTO beneficiario = beneficiarioRepository.findAll().get(0);
+
+
+        return beneficiario;
+    }
 
     private Beneficiario createBeneficiario() {
         Beneficiario beneficiario = new Beneficiario();
@@ -104,36 +131,40 @@ public class BeneficiarioServiceTest {
         //ter o estado do banco antes da chamada de delete
         this.mockMvc.perform(get(String.format("/beneficiarios"))).andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(beneficiarios)));
-
     }
 
     @Test
-    public void AtualizaBeneficiario() throws Exception{
+    public void AtualizaBeneficiario() throws Exception {
 
         Beneficiario beneficiario = createBeneficiarioAtualizacao();
         Beneficiario beneficiarioAtual = beneficiarioRepository.findAll().get(0);
 
         BeanUtils.copyProperties(beneficiario, beneficiarioAtual, "id");
 
-        this.mockMvc.perform(put(String.format("/beneficiarios/%d",beneficiarioAtual.getId()))
-                                .content(objectMapper.writeValueAsString(beneficiario))
-                                .contentType("application/json")).andExpect(status().isOk())
+        this.mockMvc.perform(put(String.format("/beneficiarios/%d", beneficiarioAtual.getId()))
+                        .content(objectMapper.writeValueAsString(beneficiario))
+                        .contentType("application/json")).andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(beneficiarioAtual)));
     }
 
-    private Documento createDocumento() {
-        Documento documento1 = new Documento();
-        documento1.setTipoDocumento(RG);
-        documento1.setId(1L);
-        documento1.setDataInclusao(LocalDate.now().minusDays(1));
-        documento1.setDataAtualizacao(LocalDate.now());
-//        Documento documento2 = new Documento();
-//        documento2.setTipoDocumento(CPF);
-//        documento2.setId(2L);
-//        documento2.setDataInclusao(LocalDate.now().minusDays(1));
-//        documento2.setDataAtualizacao(LocalDate.now());
-        return documento1;
+    @Test
+    public void InsereBeneficiario() throws Exception {
+
+
+        BeneficiarioDTO beneficiario = createBeneficiarioDocumento();
+        this.mockMvc.perform(post(String.format("/beneficiarios"))
+                        .content(objectMapper.writeValueAsString(beneficiario))
+                        .contentType("application/json")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value(beneficiario.getNome()))
+                .andExpect(jsonPath("$.telefone").value(beneficiario.getTelefone()))
+                .andExpect(jsonPath("$.dataNascimento").value(beneficiario.getDataNascimento()))
+                .andExpect(jsonPath("$.dataInclusao").value(beneficiario.getDataInclusao()))
+                .andExpect(jsonPath("$.dataAtualizacao").value(beneficiario.getDataAtualizacao()))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+
     }
+
+
 //
 //    @Test
 //    public void salva() {

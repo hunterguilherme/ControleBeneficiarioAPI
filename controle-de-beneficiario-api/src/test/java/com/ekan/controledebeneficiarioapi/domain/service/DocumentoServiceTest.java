@@ -97,8 +97,7 @@ public class DocumentoServiceTest {
         Documento documento = createDocumentoAtualizacao();
 
         Documento documentoAtual = documentoRepository.findByBeneficiarioAndDocumentType(beneficiario.getId(), documentoBase.getTipoDocumento().ordinal());
-//        BeanUtils.copyProperties(documento, documentoAtual, "id");
-//        documentoRepository.save(documentoAtual);
+
 
         this.mockMvc.perform(put(String.format("/documentos/%d", beneficiario.getId()))
                 .content(objectMapper.writeValueAsString(documentoBase))
