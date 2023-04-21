@@ -92,11 +92,8 @@ public class BeneficiarioService {
     @Transactional
     public Map<String, String> excluir(Long id) {
         try {
-            DocumentoDTO documentoDTO = documentoService.getDocumentos(id);
 
-            if (documentoDTO.getDocumentos().size() > 0) {
-                documentoService.excluiDocumento(id);
-            }
+            documentoService.excluiDocumento(id);
 
             beneficiarioRepository.deleteById(id);
 
@@ -109,8 +106,6 @@ public class BeneficiarioService {
         }
 
     }
-
-
 
 
     private LocalDate stringToDate(String date) {

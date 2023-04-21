@@ -1,3 +1,0 @@
-2023-04-20 20:01:23 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DOCUMENTO" not found (this database is empty); SQL statement:
-DELETE FROM DOCUMENTO d WHERE d.beneficiario_id = ? [42104-214]
