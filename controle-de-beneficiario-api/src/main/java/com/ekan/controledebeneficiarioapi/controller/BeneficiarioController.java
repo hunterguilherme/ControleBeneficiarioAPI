@@ -17,8 +17,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/beneficiarios")
 public class BeneficiarioController {
-
-
     @Autowired
     private BeneficiarioService beneficiarioService;
 
@@ -26,7 +24,7 @@ public class BeneficiarioController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Beneficiario Inserido com documentos", response = BeneficiarioDTO.class),
             @ApiResponse(code = 400, message = "Beneficiario fora do padrao: (yyyy-MM-dd)/ Documento fora do padrao: (yyyy-MM-dd)/ tipo Documento invalido")})
-    @RequestMapping(produces = { "application/json" }, method = RequestMethod.POST)
+    @RequestMapping(consumes = { "application/json" }, produces = { "application/json" }, method = RequestMethod.POST)
     public ResponseEntity<?> insereBeneficiario(@RequestBody @Valid BeneficiarioDTO beneficiarioDTO) {
 
             return ResponseEntity.ok(beneficiarioService.salvar(beneficiarioDTO));

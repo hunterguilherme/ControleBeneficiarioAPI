@@ -19,6 +19,7 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
 
     @Query(value = "SELECT * FROM documento AS d WHERE d.beneficiario_id = :id", nativeQuery = true)
     List<Documento> findDocumentosByBeneficiario(@Param("id") Long id);
+
     @Query(value = "SELECT * FROM documento AS d WHERE d.beneficiario_id = :id and d.tipo_documento = :tipoDocumento", nativeQuery = true)
-     Documento findByBeneficiarioAndDocumentType(@Param("id")Long id, @Param("tipoDocumento") TipoDocumento tipoDocumento);
+     Documento findByBeneficiarioAndDocumentType(@Param("id")Long id, @Param("tipoDocumento") int tipoDocumento);
 }

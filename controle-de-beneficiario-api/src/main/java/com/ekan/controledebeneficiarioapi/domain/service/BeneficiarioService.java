@@ -3,8 +3,9 @@ package com.ekan.controledebeneficiarioapi.domain.service;
 import com.ekan.controledebeneficiarioapi.domain.exceptions.EntidadeNaoEncontradaException;
 import com.ekan.controledebeneficiarioapi.domain.exceptions.PreenchimentoIncorretoException;
 import com.ekan.controledebeneficiarioapi.domain.model.Beneficiario;
-import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
 import com.ekan.controledebeneficiarioapi.domain.model.Documento;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.BeneficiarioDTO;
+import com.ekan.controledebeneficiarioapi.domain.model.dto.DocumentoDTO;
 import com.ekan.controledebeneficiarioapi.domain.repository.BeneficiarioRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,12 @@ import javax.transaction.Transactional;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.ekan.controledebeneficiarioapi.validador.ValidadorDataUtil.validacaoDatas;
 
 @Service
 public class BeneficiarioService {
@@ -31,7 +35,7 @@ public class BeneficiarioService {
     @Transactional
     public BeneficiarioDTO salvar(BeneficiarioDTO beneficiarioDTO) {
 
-        validacaoDatas(beneficiarioDTO);
+        validacaoDatas(beneficiarioDTO.getDataAtualizacao(), beneficiarioDTO.getDataInclusao(), beneficiarioDTO.getDataNascimento());
 
         Beneficiario beneficiario = Beneficiario.builder()
                 .nome(beneficiarioDTO.getNome())
@@ -42,7 +46,6 @@ public class BeneficiarioService {
                 .build();
 
         beneficiario = beneficiarioRepository.save(beneficiario);
-
         List<Documento> documentos = validaDocumento(beneficiarioDTO.getDocumentos(), beneficiario.getId());
 
         beneficiarioDTO.setId(beneficiario.getId());
@@ -63,7 +66,9 @@ public class BeneficiarioService {
     }
 
     public Beneficiario atualizaBenficiario(Long id, BeneficiarioDTO beneficiario) {
-        validacaoDatas(beneficiario);
+
+
+        validacaoDatas(beneficiario.getDataAtualizacao(), beneficiario.getDataNascimento(), beneficiario.getDataInclusao());
         Beneficiario beneficiarioAtual = buscarOuFalhar(id);
 
         BeanUtils.copyProperties(beneficiario, beneficiarioAtual, "id", "documentos");
@@ -87,10 +92,15 @@ public class BeneficiarioService {
     @Transactional
     public Map<String, String> excluir(Long id) {
         try {
-            documentoService.excluiDocumento(id);
+            DocumentoDTO documentoDTO = documentoService.getDocumentos(id);
+
+            if (documentoDTO.getDocumentos().size() > 0) {
+                documentoService.excluiDocumento(id);
+            }
+
             beneficiarioRepository.deleteById(id);
 
-            String message = String.format("beneficiario de id = %s deletado com sucesso.", id.toString());
+            String message = String.format("beneficiario de id = %d deletado com sucesso.", id);
             Map<String, String> messagemMap = new HashMap<>();
             messagemMap.put("message", message);
             return messagemMap;
@@ -101,20 +111,12 @@ public class BeneficiarioService {
     }
 
 
-    private void validacaoDatas(BeneficiarioDTO beneficiarioDTO) {
-        try {
-            LocalDate.parse(beneficiarioDTO.getDataAtualizacao());
-            LocalDate.parse(beneficiarioDTO.getDataInclusao());
-            LocalDate.parse(beneficiarioDTO.getDataNascimento());
-        } catch (DateTimeException e) {
-            throw new PreenchimentoIncorretoException("Data de beneficiario fora do padrao: (yyyy-MM-dd) ");
-        }
-    }
+
 
     private LocalDate stringToDate(String date) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate dataFormatada = LocalDate.parse(date, formatter);
-            return dataFormatada;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dataFormatada = LocalDate.parse(date, formatter);
+        return dataFormatada;
     }
 
 }

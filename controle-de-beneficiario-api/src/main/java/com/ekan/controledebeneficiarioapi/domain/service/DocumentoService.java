@@ -22,12 +22,14 @@ import java.util.Map;
 
 @Service
 public class DocumentoService {
-    private static final String NOT_FOUND = "Beneficiario não encontrado";
+    private static final String DOCUMENT_NOT_FOUND = "Documento não encontrado";
+    private static final String BENEFICIARIO_NOT_FOUND = "Beneficiário não encontrado";
 
     @Autowired
     private DocumentoRepository documentoRepository;
     @Autowired
     private BeneficiarioRepository beneficiarioRepository;
+
     public void salvaDocumento(Documento documento) {
         documentoRepository.save(documento);
     }
@@ -56,21 +58,22 @@ public class DocumentoService {
             messagemMap.put("message", message);
             return messagemMap;
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(NOT_FOUND);
+            throw new EntidadeNaoEncontradaException(DOCUMENT_NOT_FOUND);
         }
 
     }
 
     public Documento atualizaDocumento(Long id, Documento documento) {
-       try{
+        beneficiarioRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(BENEFICIARIO_NOT_FOUND));
+        try {
 
-        Documento documentoAtual = documentoRepository.findByBeneficiarioAndDocumentType(id, documento.getTipoDocumento());
-        BeanUtils.copyProperties(documento, documentoAtual, "id", "beneficiario");
-        return documentoRepository.save(documentoAtual);
+            Documento documentoAtual = documentoRepository.findByBeneficiarioAndDocumentType(id, documento.getTipoDocumento().ordinal());
+            BeanUtils.copyProperties(documento, documentoAtual, "id", "beneficiario");
+            return documentoRepository.save(documentoAtual);
 
-       }catch (IllegalArgumentException e){
-           throw  new EntidadeNaoEncontradaException("Beneficiario não encontrado");
-       }
+        } catch (IllegalArgumentException e) {
+            throw new EntidadeNaoEncontradaException(DOCUMENT_NOT_FOUND);
+        }
     }
 
 }

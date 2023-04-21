@@ -29,7 +29,11 @@ public class DocumentoController {
         return ResponseEntity.ok(documentoService.excluir(id)) ;
     }
 
-    @GetMapping(value = "{id}",produces = { "application/json" })
+    @ApiOperation(value = "busca Documento", nickname = "getDocumento", notes = "busca apenas a lista de documento com id do beneficiario", response = Beneficiario.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de Documento", response = Beneficiario.class),
+            @ApiResponse(code = 404, message = "Documento não encontrados")})
+    @RequestMapping(value = "{id}",produces = { "application/json" }, method = RequestMethod.GET)
     public ResponseEntity<?> getDocumentosBeneficiario(@PathVariable Long id) {
         return ResponseEntity.ok(documentoService.getDocumentos(id));
     }

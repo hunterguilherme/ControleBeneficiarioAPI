@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPairGenerator;
 
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class AuthorizeFilter implements Filter {
 
     private static final SecretKey CHAVE = new SecretKeySpec(

@@ -19,19 +19,28 @@ public class Beneficiario {
     @Column(name = "beneficiario_id")
     private Long id;
 
+    @Column(name = "nome", nullable = false)
     private String nome;
 
+
+    @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @Column(name = "data_Nascimento")
+    @Column(name = "data_Nascimento", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascimento;
 
-    @Column(name = "data_inclusao")
+    @Column(name = "data_inclusao", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataInclusao;
 
-    @Column(name = "data_atualizacao")
+    @Column(name = "data_atualizacao",nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAtualizacao;
-    public Beneficiario(){}
+
+
+    public Beneficiario() {
+    }
 
     public Beneficiario(Long id, String nome, String telefone, LocalDate dataNascimento, LocalDate dataInclusao, LocalDate dataAtualizacao) {
         this.id = id;
@@ -41,4 +50,5 @@ public class Beneficiario {
         this.dataInclusao = dataInclusao;
         this.dataAtualizacao = dataAtualizacao;
     }
+
 }
