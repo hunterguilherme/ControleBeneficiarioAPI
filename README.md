@@ -1,6 +1,6 @@
 
 # Controle-Beneficiario-Api
-Api  de controle de beneficiarios e seus relacionamentos, implementando autenticação via  Jwt. A aplicação usa db mysql e os testes executam um h2.
+Api  de controle de beneficiarios e seus relacionamentos, implementando autenticação via  Jwt. A aplicação é versionada com jdk11.0.8, usando db mysql e executando testes no h2.
 ## API 
 - [x] Cadastro de beneficiario com documentos
 - [x] Busca lista de beneficiarios
@@ -13,6 +13,7 @@ Api  de controle de beneficiarios e seus relacionamentos, implementando autentic
 
 ## Instalação
 Rode o comando abaixo para instalar as dependecnias
+
 ``` mvn clean package install ```
 
 Rode o comando abaixo para rodar os testes
